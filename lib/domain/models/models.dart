@@ -1,4 +1,3 @@
-
 class SliderObject {
   String title;
   String subTitle;
@@ -7,76 +6,64 @@ class SliderObject {
   SliderObject(this.title, this.subTitle, this.image);
 }
 
+class SliderViewOblect {
+  SliderViewOblect(this.sliderObject, this.currentIndex, this.numberOfSlides);
 
-class SliderViewOblect{
-  SliderViewOblect(this.sliderObject,this.currentIndex,this.numberOfSlides);
   SliderObject sliderObject;
   int numberOfSlides;
   int currentIndex;
-
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-
-
 //login models
 
-class Customer{
+class Customer {
   String id;
   String name;
   int num_notif;
-  Customer(
-      this.id,this.num_notif,this.name
-      );
 
-
+  Customer(this.id, this.num_notif, this.name);
 }
 
-class Contacts{
+class Contacts {
   String phone;
   String email;
   String link;
-  Contacts(this.phone,this.email,this.link
 
-      );
-
-
+  Contacts(this.phone, this.email, this.link);
 }
+
 class Authentication {
- Customer? customer;
- Contacts? contacts;
- Authentication(this.contacts,this.customer);
+  Customer? customer;
+  Contacts? contacts;
 
-
-
+  Authentication(this.contacts, this.customer);
 }
 
-
-class Service{
-
+class Service {
   int id;
   String title;
   String image;
-  Service(this.id,this.title,this.image);
 
+  Service(this.id, this.title, this.image);
 }
-class Banners{
 
+class Banners {
   int id;
   String link;
   String title;
   String image;
-  Banners(this.id,this.link,this.title,this.image);
 
+  Banners(this.id, this.link, this.title, this.image);
 }
-class Stores{
 
+class Stores {
   int id;
   String title;
   String image;
-  Stores(this.id,this.title,this.image);
 
+  Stores(this.id, this.title, this.image);
 }
 
 class StoreDetails {
@@ -90,29 +77,44 @@ class StoreDetails {
   StoreDetails(
       this.id, this.title, this.image, this.details, this.services, this.about);
 }
-class HomeData{
 
-List<Service> services;
-List<Banners> banners;
-List<Stores> stores;
+class HomeData {
+  List<Service> services;
+  List<Banners> banners;
+  List<Stores> stores;
 
-
-HomeData(this.services, this.banners, this.stores);
-
-
-
+  HomeData(this.services, this.banners, this.stores);
 }
 
-
-
-class HomeObject{
-
-HomeData ? data;
+class HomeObject {
+  HomeData? data;
 
   HomeObject(this.data);
-
-
-
 }
 
+class UserDataModel {
+  String? uId;
+  String? email;
+  String? mobileNumber;
+  String? countryMobileCode;
+  String? profilePicture;
+  String? name;
+  String? password;
+  bool?   isVerefide;
 
+  UserDataModel(this.uId, this.email, this.mobileNumber, this.countryMobileCode,
+      this.profilePicture, this.name, this.password, this.isVerefide);
+
+  UserDataModel.fromJson(Map<String,dynamic>json){
+
+    uId=json['uId'];
+    email=json['email'];
+    mobileNumber=json['mobileNumber'];
+    countryMobileCode=json['countryMobileCode'];
+    profilePicture=json['profilePicture'];
+    name=json['name'];
+    password=json['password'];
+    isVerefide=json['isVerefide'];
+
+  }
+}

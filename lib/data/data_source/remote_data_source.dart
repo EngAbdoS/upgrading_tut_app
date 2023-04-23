@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flu_proj/data/network/app_api.dart';
 import 'package:flu_proj/data/network/requests.dart';
 import 'package:flu_proj/data/response/responses.dart';
+import 'package:flu_proj/domain/models/models.dart';
 
 abstract class RemoteDataSource {
   Future<AuthenticationResponse> login(LoginRequest loginRequest);
@@ -8,12 +11,12 @@ abstract class RemoteDataSource {
   Future<ForgotPasswordResponse> forgotPassword(String email);
 
   Future<AuthenticationResponse> register(RegisterRequest registerRequest);
+
   Future<StoreDetailsResponse> getStoreDetails();
 
   Future<HomeResponse> getHomeData();
 
-
-
+  Future<UserDataModel?> getUserData(String uID);
 }
 
 class RemoteDataSourceIml implements RemoteDataSource {
@@ -41,18 +44,33 @@ class RemoteDataSourceIml implements RemoteDataSource {
         registerRequest.mobileNumber,
         registerRequest.email,
         registerRequest.password,
-    ""//using mock API
-    //    registerRequest.profilePicture
+        "" //using mock API
+        //    registerRequest.profilePicture
 
-    );
+        );
   }
 
   @override
   Future<StoreDetailsResponse> getStoreDetails() async {
     return await _appServiceClient.getStoreDetails();
   }
+
   @override
-  Future<HomeResponse> getHomeData()async {
-  return await _appServiceClient.getHomeData();
+  Future<HomeResponse> getHomeData() async {
+    return await _appServiceClient.getHomeData();
+  }
+
+  @override
+  Future<UserDataModel?> getUserData(String uID) async {
+    print("user id id $uID");
+    UserDataModel? userData;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uID)
+        .get()
+        .then((user) {
+      userData = UserDataModel.fromJson(user.data()!);
+    });
+    return userData;
   }
 }

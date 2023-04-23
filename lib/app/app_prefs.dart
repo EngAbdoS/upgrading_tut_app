@@ -61,10 +61,15 @@ class AppPreferences {
   Future<bool> isLoggedIn() async {
     return _sharedPreferences.getBool(PREFS_KEY_IS_USER_LOGGED_IN) ?? false;
   }
-  void setUserID(String uID){
+  void setUserID(String uID)async{
     _sharedPreferences.setString(USER_ID_KEY, uID);
     print("uid saved");
     print(uID);
+  }
+  Future<String>getUserID()async
+  {
+    String id=  _sharedPreferences.getString(USER_ID_KEY)??"";
+    return id;
   }
   Future<void> logout() async {
     _sharedPreferences.remove(PREFS_KEY_IS_USER_LOGGED_IN);

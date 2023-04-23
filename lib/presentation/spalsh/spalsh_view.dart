@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flu_proj/data/data_source/remote_data_source.dart';
+import 'package:flu_proj/domain/models/models.dart';
 import 'package:flu_proj/presentation/resourses/assets_manager.dart';
 import 'package:flu_proj/presentation/resourses/color_manager.dart';
 import 'package:flu_proj/presentation/resourses/constant_manager.dart';
@@ -19,15 +21,28 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   Timer? _timer;
   final AppPreferences _appPreferences = instance<AppPreferences>();
+  final RemoteDataSource _remoteDataSource = instance<RemoteDataSource>();
 
   _startDelay() {
     _timer = Timer(const Duration(seconds: AppConstants.SplashDelay), _goNext);
   }
 
   _goNext() async {
-    _appPreferences.isLoggedIn().then((isUserLoggedIn) {
+    _appPreferences.isLoggedIn().then((isUserLoggedIn) async {
       if (isUserLoggedIn) {
-        Navigator.pushReplacementNamed(context, Routes.mainRoute);
+        //TODO call get data
+        String id = await _appPreferences.getUserID();
+      UserDataModel? userDataModel=  await _remoteDataSource.getUserData(id);
+        if(userDataModel!.isVerefide!)
+          {
+            Navigator.pushReplacementNamed(context, Routes.mainRoute);
+          }
+        else
+          {
+            print("not verified");
+            //TODO go to verification
+          }
+
       } else {
         _appPreferences
             .isOnBoardingScreenViewed()
