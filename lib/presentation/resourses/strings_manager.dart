@@ -57,4 +57,6 @@ class AppStrings {
   static const String defaultError = "default_error";
   static const String cacheError = "cache_error";
   static const String noInternetError = "no_internet_error";
+  static const String verificationMessage=  "verification_message";
+  static const String sendVerification=  "send_verification";
 }

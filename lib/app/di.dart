@@ -15,6 +15,7 @@ import 'package:flu_proj/presentation/forgot_password/viewModel/forgotPasswordVi
 import 'package:flu_proj/presentation/login/viewModel/login_viewModel.dart';
 import 'package:flu_proj/presentation/main/pages/home/viewModel/home_view_model.dart';
 import 'package:flu_proj/presentation/register/registerViewModel/registerViewModel.dart';
+import 'package:flu_proj/presentation/verification/viewModel/verification_viewModel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -87,5 +88,12 @@ initStoreDetailsModule() {
             () => StoreDetailsUseCase(instance()));
     instance.registerFactory<StoreDetailsViewModel>(
             () => StoreDetailsViewModel(instance()));
+  }
+}
+initVerificationModule() {
+  if (!GetIt.I.isRegistered<VerificationViewModel>()) {
+    instance.registerFactory<VerificationViewModel>(
+            () => VerificationViewModel());
+
   }
 }

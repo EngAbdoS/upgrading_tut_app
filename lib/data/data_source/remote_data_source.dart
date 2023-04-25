@@ -16,7 +16,7 @@ abstract class RemoteDataSource {
 
   Future<HomeResponse> getHomeData();
 
-  Future<UserDataModel?> getUserData(String uID);
+  Future<UserDataModel> getUserData(String uID);
 }
 
 class RemoteDataSourceIml implements RemoteDataSource {
@@ -61,9 +61,9 @@ class RemoteDataSourceIml implements RemoteDataSource {
   }
 
   @override
-  Future<UserDataModel?> getUserData(String uID) async {
+  Future<UserDataModel> getUserData(String uID) async {
     print("user id id $uID");
-    UserDataModel? userData;
+   late UserDataModel userData;
     await FirebaseFirestore.instance
         .collection('users')
         .doc(uID)

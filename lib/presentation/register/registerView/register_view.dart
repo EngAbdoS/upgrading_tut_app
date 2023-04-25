@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flu_proj/app/di.dart';
 import 'package:flu_proj/presentation/common/state_renderer/state_renderer_imp.dart';
 import 'package:flu_proj/presentation/register/registerViewModel/registerViewModel.dart';
@@ -60,7 +61,14 @@ class _RegisterViewState extends State<RegisterView> {
         //TODO study ...
         SchedulerBinding.instance.addPostFrameCallback((_) {
           _appPreferences.setLoggedIn();
-          Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+          if(FirebaseAuth.instance.currentUser!.emailVerified){
+            Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+
+          }else
+            {
+              Navigator.of(context).pushReplacementNamed(Routes.verificationRoute);
+
+            }
         });
       }
     });

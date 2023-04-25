@@ -63,5 +63,11 @@
   "mobile_number_hint_message": "Mobile should be at least 10 digits",
   "password_hint_message": "Password should be at least 6 chars",
   "photo_from_galley": "Photo from galley",
-  "photo_from_camera": "Photo from camera"
+  "photo_from_camera": "Photo from camera",
+  "verification_message": "Please send an email to verify your email address. then check your email for a verification message.",
+  "send_verification": "Send verification"
+
+
+
+
 }

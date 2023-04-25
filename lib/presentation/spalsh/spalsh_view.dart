@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flu_proj/data/data_source/remote_data_source.dart';
 import 'package:flu_proj/domain/models/models.dart';
 import 'package:flu_proj/presentation/resourses/assets_manager.dart';
@@ -28,19 +29,21 @@ class _SplashViewState extends State<SplashView> {
   }
 
   _goNext() async {
-    _appPreferences.isLoggedIn().then((isUserLoggedIn) async {
+    _appPreferences.isLoggedIn().then((isUserLoggedIn) async {//isUserLoggedIn=false;
       if (isUserLoggedIn) {
         //TODO call get data
         String id = await _appPreferences.getUserID();
-      UserDataModel? userDataModel=  await _remoteDataSource.getUserData(id);
-        if(userDataModel!.isVerefide!)
+      UserDataModel userDataModel=  await _remoteDataSource.getUserData(id);
+      print(FirebaseAuth.instance.currentUser!.emailVerified);
+        if(FirebaseAuth.instance.currentUser!.emailVerified)
           {
             Navigator.pushReplacementNamed(context, Routes.mainRoute);
           }
         else
           {
             print("not verified");
-            //TODO go to verification
+            Navigator.pushReplacementNamed(context, Routes.verificationRoute);
+
           }
 
       } else {

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flu_proj/app/di.dart';
 import 'package:flu_proj/presentation/common/state_renderer/state_renderer_imp.dart';
 import 'package:flu_proj/presentation/login/viewModel/login_viewModel.dart';
@@ -39,7 +40,14 @@ class _LoginViewState extends State<LoginView> {
         //TODO study ...
         SchedulerBinding.instance.addPostFrameCallback((_) {
           _appPreferences.setLoggedIn();
-          Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+          if(FirebaseAuth.instance.currentUser!.emailVerified){
+            Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+
+          }else
+          {
+            Navigator.of(context).pushReplacementNamed(Routes.verificationRoute);
+
+          }
         });
       }
     });

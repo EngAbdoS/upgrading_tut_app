@@ -5,6 +5,7 @@ import 'package:flu_proj/presentation/onboarding/view/onboarding_view.dart';
 import 'package:flu_proj/presentation/resourses/strings_manager.dart';
 import 'package:flu_proj/presentation/spalsh/spalsh_view.dart';
 import 'package:flu_proj/presentation/store_details/view/store_details_view.dart';
+import 'package:flu_proj/presentation/verification/view/verification_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/di.dart';
@@ -14,6 +15,7 @@ class Routes {
   static const String splashRoute = "/";
   static const String loginRoute = "/login";
   static const String registerRoute = "/register";
+  static const String verificationRoute = "/verification";
   static const String forgotPasswordRoute = "/forgotPasword";
   static const String onBoardingRoute = "/onBoarding";
   static const String mainRoute = "/main";
@@ -42,6 +44,9 @@ class RouteGenerator {
       case Routes.storeDetailsRoute:
         initStoreDetailsModule();
         return MaterialPageRoute(builder: (_) => const StoreDetailsView());
+      case Routes.verificationRoute:
+        initVerificationModule();
+        return MaterialPageRoute(builder: (_) => const VerificationView());
       default:
         return unDefinedRoute();
     }
