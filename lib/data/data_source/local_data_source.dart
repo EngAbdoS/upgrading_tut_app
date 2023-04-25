@@ -23,7 +23,6 @@ abstract class LocalDataSource {
 
 class LocalDataSourceImpl implements LocalDataSource {
   // run time cache
-
   Map<String, CachedItem> cacheMap = Map();
 
   @override

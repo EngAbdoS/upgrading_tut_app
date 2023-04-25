@@ -61,7 +61,7 @@ initForgotPasswordModule() {
     instance.registerFactory<ForgotPasswordUseCase>(
         () => ForgotPasswordUseCase(instance()));
     instance.registerFactory<ForgotPasswordViewModel>(
-        () => ForgotPasswordViewModel(instance()));
+        () => ForgotPasswordViewModel());
   }
 }
 

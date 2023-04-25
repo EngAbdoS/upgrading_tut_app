@@ -1,17 +1,18 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flu_proj/app/functions.dart';
 import 'package:flu_proj/presentation/base/base_view_model.dart';
 import 'package:flu_proj/presentation/common/state_renderer/state_renderer.dart';
 import 'package:flu_proj/presentation/common/state_renderer/state_renderer_imp.dart';
+import 'package:flu_proj/presentation/resourses/strings_manager.dart';
 
-import '../../../domain/usecase/forgot_bassword_use_case.dart';
 
 class ForgotPasswordViewModel extends BaseViewModel
     with ForgotPasswordViewModelInputs, ForgotPasswordViewModelOutputs {
-  final ForgotPasswordUseCase _forgotPasswordUseCase;
+ // final ForgotPasswordUseCase _forgotPasswordUseCase;
 
-  ForgotPasswordViewModel(this._forgotPasswordUseCase);
+ // ForgotPasswordViewModel(this._forgotPasswordUseCase);
 
   final StreamController _emailStreamController =
       StreamController<String>.broadcast();
@@ -24,23 +25,28 @@ class ForgotPasswordViewModel extends BaseViewModel
   void start() {
     inputState.add(ContentState());
   }
-@override
+
+  @override
   void dispose() {
     super.dispose();
 
-    _emailStreamController.close();_isAllInputValidStreamController.close();
+    _emailStreamController.close();
+    _isAllInputValidStreamController.close();
   }
+
   @override
   forgotPassword() async {
     inputState.add(
         LoadingState(stateRendererType: StateRendererType.popupLoadingState));
-
-    (await _forgotPasswordUseCase.execute(email)).fold((failure) {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: email)
+          .then((_) => {inputState.add(SuccessState(AppStrings.resetPasswordMessage))});
+    } catch (error) {
       inputState
-          .add(ErrorState(StateRendererType.popupErrorState, failure.message));
-    }, (supportMessage) {
-      inputState.add(SuccessState(supportMessage));
-    });
+          .add(ErrorState(StateRendererType.popupErrorState, error.toString()));
+    }
+
   }
 
   @override

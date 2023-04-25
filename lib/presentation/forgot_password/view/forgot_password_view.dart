@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../app/di.dart';
 import '../../resourses/assets_manager.dart';
 import '../../resourses/color_manager.dart';
+import '../../resourses/router_manager.dart';
 import '../../resourses/strings_manager.dart';
 import '../../resourses/values_manager.dart';
 
@@ -108,7 +109,35 @@ Widget _getContentWidget()
                   );
                 },
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p28),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.loginRoute);
+                    },
+                    child: Text(
+                      AppStrings.login,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.end,
+                    ).tr(),
+                  ),TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.registerRoute);
+                    },
+                    child: Text(
+                      AppStrings.registerNewAccount,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.end,
+                    ).tr(),
+                  ),
+                ],
+              ),
             )
+
           ],
         ),
       ),

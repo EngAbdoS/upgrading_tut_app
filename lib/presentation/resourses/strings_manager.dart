@@ -60,5 +60,7 @@ class AppStrings {
   static const String verificationMessage=  "verification_message";
   static const String sendVerification=  "send_verification";
   static const String registerNewAccount=  "register_new_account";
+  static const String resetPasswordMessage=  "reset_password_message";
+
 
 }
