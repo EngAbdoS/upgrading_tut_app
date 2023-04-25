@@ -91,7 +91,17 @@ class _VerificationViewState extends State<VerificationView> {
                   child: ElevatedButton(
                       onPressed: () => _viewModel.sendVerification(),
                       child: const Text(AppStrings.sendVerification).tr()),
-                ))
+                ),),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.registerRoute);
+              },
+              child: Text(
+                AppStrings.registerNewAccount,
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.end,
+              ).tr(),
+            ),
 
           ],
         ),

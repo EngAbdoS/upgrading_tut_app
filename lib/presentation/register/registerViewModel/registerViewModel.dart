@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flu_proj/app/di.dart';
 import 'package:flu_proj/domain/usecase/registerUseCase.dart';
 import 'package:flu_proj/presentation/base/base_view_model.dart';
@@ -13,9 +14,9 @@ import '../../common/state_renderer/state_renderer_imp.dart';
 
 class RegisterViewModel extends BaseViewModel
     with RegisterViewModelInputs, RegisterViewModelOutputs {
- final AppPreferences _appPreferences = instance<AppPreferences>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
- StreamController userNameStreamController =
+  StreamController userNameStreamController =
       StreamController<String>.broadcast();
   StreamController mobileNumberStreamController =
       StreamController<String>.broadcast();
@@ -31,10 +32,12 @@ class RegisterViewModel extends BaseViewModel
       StreamController<bool>();
   final RegisterUseCase _registerUseCase;
   final StreamController _isPasswordHiddenStreamController =
-  StreamController<void>.broadcast();
-  RegisterViewModel(this._registerUseCase);
-  bool? _isHidden;
+      StreamController<void>.broadcast();
 
+  RegisterViewModel(this._registerUseCase);
+
+  bool? _isHidden;
+  File? profilePic;
   var registerObject = RegisterObject("", "", "", "", "", "");
 
   @override
@@ -46,7 +49,7 @@ class RegisterViewModel extends BaseViewModel
   register() async {
     inputState.add(
         LoadingState(stateRendererType: StateRendererType.popupLoadingState));
-
+  await  uploadPhoto();
     (await _registerUseCase.execute(RegisterUseCaseInput(
       registerObject.userName,
       registerObject.countryMobileCode,
@@ -60,7 +63,7 @@ class RegisterViewModel extends BaseViewModel
                   inputState.add(ErrorState(
                       StateRendererType.popupErrorState, failure.message))
                 }, (data) {
-              _appPreferences.setUserID(data.user!.uid);
+      _appPreferences.setUserID(data.user!.uid);
       inputState.add(ContentState());
       isUserRegisteredSuccessfullyStreamController.add(true);
     });
@@ -88,8 +91,10 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   Sink get inputPassword => passwordStreamController.sink;
+
   @override
   Sink get inputPasswordHideState => _isPasswordHiddenStreamController.sink;
+
   @override
   Sink get inputProfilePicture => profilePictureStreamController.sink;
 
@@ -145,13 +150,26 @@ class RegisterViewModel extends BaseViewModel
   }
 
   @override
-  setProfilePicture(File profilePicture) {
+  setProfilePicture(File profilePicture) async {
     inputProfilePicture.add(profilePicture);
+    profilePic=profilePicture;
     profilePicture.path.isNotEmpty
         ? registerObject =
             registerObject.copyWith(profilePicture: profilePicture.path)
         : registerObject = registerObject.copyWith(profilePicture: "");
     validate();
+  }
+
+  uploadPhoto() async {
+    var storageRef = FirebaseStorage.instance.ref().child(registerObject.userName);
+    await storageRef.putFile(profilePic!);
+
+    storageRef.getDownloadURL().then((value) => {
+          print(value),
+          value.isNotEmpty
+              ? registerObject = registerObject.copyWith(profilePicture: value)
+              : registerObject = registerObject.copyWith(profilePicture: ""),
+        });
   }
 
   //*****************outputs*******************
@@ -161,9 +179,8 @@ class RegisterViewModel extends BaseViewModel
       .map((userName) => _isUserNameValid(userName));
 
   @override
-  Stream<String?> get outputErrorUserName =>
-      outputIsUserNameValid.map((isUserNameValid) =>
-          isUserNameValid ? null : AppStrings.userNameInvalid);
+  Stream<String?> get outputErrorUserName => outputIsUserNameValid.map(
+      (isUserNameValid) => isUserNameValid ? null : AppStrings.userNameInvalid);
 
   @override
   Stream<bool> get outputIsEmailValid =>
@@ -186,12 +203,14 @@ class RegisterViewModel extends BaseViewModel
   @override
   Stream<bool> get outputIsPasswordValid => passwordStreamController.stream
       .map((password) => _isPasswordValid(password));
+
   @override
-  Stream<bool> get outputIsPasswordHidden => _isPasswordHiddenStreamController.stream.map((hidden) => hidden);
+  Stream<bool> get outputIsPasswordHidden =>
+      _isPasswordHiddenStreamController.stream.map((hidden) => hidden);
+
   @override
-  Stream<String?> get outputErrorPassword =>
-      outputIsPasswordValid.map((isPasswordValid) =>
-          isPasswordValid ? null : AppStrings.passwordInvalid);
+  Stream<String?> get outputErrorPassword => outputIsPasswordValid.map(
+      (isPasswordValid) => isPasswordValid ? null : AppStrings.passwordInvalid);
 
   @override
   Stream<File> get outputIsProfilePictureValid =>
@@ -229,22 +248,15 @@ class RegisterViewModel extends BaseViewModel
     //بنده علي الاستريم و بمشي قيمة فيه
   }
 
-
-
-
-
   @override
-  changePasswordState(){
-    if(_isHidden==true||_isHidden==null){
-      _isHidden=false;
+  changePasswordState() {
+    if (_isHidden == true || _isHidden == null) {
+      _isHidden = false;
       _isPasswordHiddenStreamController.add(false);
-    }
-    else
-    {
-      _isHidden=true;
+    } else {
+      _isHidden = true;
       _isPasswordHiddenStreamController.add(true);
     }
-
   }
 }
 
@@ -256,6 +268,7 @@ abstract class RegisterViewModelInputs {
   Sink get inputEmail;
 
   Sink get inputPassword;
+
   Sink get inputPasswordHideState;
 
   Sink get inputProfilePicture;
@@ -271,7 +284,9 @@ abstract class RegisterViewModelInputs {
   setCountryCode(String countryCode);
 
   setPassword(String password);
+
   changePasswordState();
+
   setEmail(String email);
 
   setProfilePicture(File profilePicture);
@@ -291,6 +306,7 @@ abstract class RegisterViewModelOutputs {
   Stream<String?> get outputErrorEmail;
 
   Stream<bool> get outputIsPasswordValid;
+
   Stream<bool> get outputIsPasswordHidden;
 
   Stream<String?> get outputErrorPassword;

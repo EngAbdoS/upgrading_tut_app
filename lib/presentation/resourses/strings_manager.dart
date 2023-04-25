@@ -59,4 +59,6 @@ class AppStrings {
   static const String noInternetError = "no_internet_error";
   static const String verificationMessage=  "verification_message";
   static const String sendVerification=  "send_verification";
+  static const String registerNewAccount=  "register_new_account";
+
 }
