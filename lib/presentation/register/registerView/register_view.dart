@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flu_proj/app/di.dart';
 import 'package:flu_proj/presentation/common/state_renderer/state_renderer_imp.dart';
 import 'package:flu_proj/presentation/register/registerViewModel/registerViewModel.dart';
+import 'package:flu_proj/presentation/resourses/assets_manager.dart';
 import 'package:flu_proj/presentation/resourses/color_manager.dart';
 import 'package:flu_proj/presentation/resourses/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
-import '../../resourses/assets_manager.dart';
 import '../../resourses/router_manager.dart';
 import '../../resourses/strings_manager.dart';
 
@@ -111,10 +111,20 @@ class _RegisterViewState extends State<RegisterView> {
         child: Form(
           key: _formKey,
           child: Column(
-            children: [
-              const Center(
-                child: Image(
-                  image: AssetImage(ImageAssets.splashLogo),
+            children: [///////////**********************************************************
+               Center(
+              child:  Container(
+
+                  padding:  const EdgeInsets.only(
+                      left: AppPadding.p28, right: AppPadding.p28),
+                  child: GestureDetector(
+                    onTap: () {
+                      _showPicker(context);
+                    },
+                    child: CircleAvatar(
+                        radius: AppSize.s100*0.92,
+                        child: _getMediaWidget()),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -243,28 +253,28 @@ class _RegisterViewState extends State<RegisterView> {
               const SizedBox(
                 height: AppSize.s18,
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: AppPadding.p28, right: AppPadding.p28),
-                child: GestureDetector(
-                  onTap: () {
-                    _showPicker(context);
-                  },
-                  child: SizedBox(
-                    height: AppSize.s40,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(
-                              Radius.circular(AppSize.s8)),
-                          border: Border.all(color: ColorManager.gray)),
-                      child: _getMediaWidget(),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: AppSize.s40,
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //       left: AppPadding.p28, right: AppPadding.p28),
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       _showPicker(context);
+              //     },
+              //     child: SizedBox(
+              //       height: AppSize.s40,
+              //       child: Container(
+              //         decoration: BoxDecoration(
+              //             borderRadius: const BorderRadius.all(
+              //                 Radius.circular(AppSize.s8)),
+              //             border: Border.all(color: ColorManager.gray)),
+              //         child: _getMediaWidget(),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: AppSize.s40,
+              // ),
               Padding(
                 padding: const EdgeInsets.only(
                     left: AppPadding.p28, right: AppPadding.p28),
@@ -348,40 +358,38 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Widget _getMediaWidget() {
-    return Padding(
-      padding: const EdgeInsets.only(left: AppPadding.p8, right: AppPadding.p8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            child: const Text(AppStrings.profilePicture).tr(),
-          ),
-          Flexible(
-            child: StreamBuilder<File>(
-              stream: _viewModel.outputIsProfilePictureValid,
-              builder: (context, snapshot) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                      top: AppPadding.p8 * 0.2, bottom: AppPadding.p8 * 0.2),
-                  child: _pickedImage(snapshot.data),
-                );
-              },
-            ),
-          ),
-          Flexible(
-            child: SvgPicture.asset(ImageAssets.camera),
-          ),
-        ],
-      ),
+    return StreamBuilder<File>(
+      stream: _viewModel.outputIsProfilePictureValid,
+      builder: (context, snapshot) {
+        return  _pickedImage(snapshot.data)
+        ;
+      },
     );
   }
 
   Widget _pickedImage(File? image) {
-    if (image != null && image.path.isNotEmpty) {
-      return Image.file(image);
-    } else {
-      return Container();
-    }
+
+    if(image != null && image.path.isNotEmpty){
+
+      return CircleAvatar(
+        radius: AppSize.s100*.9,
+
+        backgroundImage: Image.file(image).image
+    )
+    ;
+    }else
+      {
+      return const CircleAvatar(
+      radius: AppSize.s100*.9,
+      backgroundImage:AssetImage(ImageAssets.empty) ,
+      )
+      ;
+      }
+
+
+
+
+
   }
 
   @override

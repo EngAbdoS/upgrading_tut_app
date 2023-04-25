@@ -3,6 +3,7 @@ const String JSON_PATH = "assets/json";
 
 class ImageAssets {
   static const String splashLogo = "$IMAGE_PATH/splash_logo.png";
+  static const String empty = "$IMAGE_PATH/empty.png";
 
   static const String onBoardingLogo1 = "$IMAGE_PATH/onBoardingLogo1.svg";
   static const String onBoardingLogo2 = "$IMAGE_PATH/onBoardingLogo2.svg";
@@ -15,6 +16,8 @@ class ImageAssets {
   static const String hollowCircle = "$IMAGE_PATH/hollow_circle.svg";
 
   static const String camera = "$IMAGE_PATH/camera.svg";
+
+  ImageAssets(String empty);
 }
 
 class JsonAssets {
