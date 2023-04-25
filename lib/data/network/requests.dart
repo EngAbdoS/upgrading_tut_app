@@ -30,11 +30,11 @@ extension RegisterRequestExtention on RegisterRequest {
   Map<String, dynamic> tpMap() {
     return {
       'name': userName,
-      ' countryMobileCode': countryMobileCode,
-      ' mobileNumber': mobileNumber,
-      ' email': email,
-      ' password': password,
-      ' profilePicture': profilePicture,
+      'countryMobileCode': countryMobileCode,
+      'mobileNumber': mobileNumber,
+      'email': email,
+      'password': password,
+      'profilePicture': profilePicture,
       'uId': uId,
       'isVerefide': isVerefide,
     };

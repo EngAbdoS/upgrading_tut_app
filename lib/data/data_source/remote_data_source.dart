@@ -69,8 +69,16 @@ class RemoteDataSourceIml implements RemoteDataSource {
         .doc(uID)
         .get()
         .then((user) {
+
+          print(user.data());
       userData = UserDataModel.fromJson(user.data()!);
     });
+    print(userData.name);
+    print(userData.profilePicture);
+    print(userData.password);
+    print(userData.isVerefide);
+    print(userData.countryMobileCode);
+    print(userData.mobileNumber);
     return userData;
   }
 }

@@ -85,15 +85,15 @@ initHomeModule() {
 initStoreDetailsModule() {
   if (!GetIt.I.isRegistered<StoreDetailsUseCase>()) {
     instance.registerFactory<StoreDetailsUseCase>(
-            () => StoreDetailsUseCase(instance()));
+        () => StoreDetailsUseCase(instance()));
     instance.registerFactory<StoreDetailsViewModel>(
-            () => StoreDetailsViewModel(instance()));
+        () => StoreDetailsViewModel(instance()));
   }
 }
+
 initVerificationModule() {
   if (!GetIt.I.isRegistered<VerificationViewModel>()) {
-    instance.registerFactory<VerificationViewModel>(
-            () => VerificationViewModel());
-
+    instance
+        .registerFactory<VerificationViewModel>(() => VerificationViewModel());
   }
 }

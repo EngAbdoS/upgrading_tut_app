@@ -93,6 +93,9 @@ class HomeObject {
 }
 
 class UserDataModel {
+  UserDataModel(this.uId, this.email, this.mobileNumber, this.countryMobileCode,
+      this.profilePicture, this.name, this.password, this.isVerefide);
+
   String? uId;
   String? email;
   String? mobileNumber;
@@ -100,21 +103,16 @@ class UserDataModel {
   String? profilePicture;
   String? name;
   String? password;
-  bool?   isVerefide;
+  bool? isVerefide;
 
-  UserDataModel(this.uId, this.email, this.mobileNumber, this.countryMobileCode,
-      this.profilePicture, this.name, this.password, this.isVerefide);
-
-  UserDataModel.fromJson(Map<String,dynamic>json){
-
-    uId=json['uId'];
-    email=json['email'];
-    mobileNumber=json['mobileNumber'];
-    countryMobileCode=json['countryMobileCode'];
-    profilePicture=json['profilePicture'];
-    name=json['name'];
-    password=json['password'];
-    isVerefide=json['isVerefide'];
-
+  UserDataModel.fromJson(Map<String, dynamic> json) {
+    uId = json['uId'];
+    email = json['email'];
+    mobileNumber = json['mobileNumber'];
+    countryMobileCode = json['countryMobileCode'];
+    profilePicture = json['profilePicture'];
+    name = json['name'];
+    password = json['password'];
+    isVerefide = json['isVerefide'];
   }
 }

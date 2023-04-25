@@ -10,9 +10,7 @@ import 'package:flu_proj/presentation/resourses/strings_manager.dart';
 
 class ForgotPasswordViewModel extends BaseViewModel
     with ForgotPasswordViewModelInputs, ForgotPasswordViewModelOutputs {
- // final ForgotPasswordUseCase _forgotPasswordUseCase;
 
- // ForgotPasswordViewModel(this._forgotPasswordUseCase);
 
   final StreamController _emailStreamController =
       StreamController<String>.broadcast();

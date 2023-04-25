@@ -164,7 +164,8 @@ class RegisterViewModel extends BaseViewModel
     var storageRef = FirebaseStorage.instance.ref().child(registerObject.userName);
     await storageRef.putFile(profilePic!);
 
-    storageRef.getDownloadURL().then((value) => {
+ await storageRef.getDownloadURL().then((value) => {
+   print("photooooooo valuoooo"),
           print(value),
           value.isNotEmpty
               ? registerObject = registerObject.copyWith(profilePicture: value)
